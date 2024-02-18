@@ -1,4 +1,4 @@
-package br.com.devkemc.dto;
+package br.com.devkemc.infrastructure.web.dto.customer;
 
 import java.time.ZonedDateTime;
 

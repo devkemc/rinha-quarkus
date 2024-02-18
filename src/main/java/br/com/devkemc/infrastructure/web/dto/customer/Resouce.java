@@ -1,8 +1,9 @@
-package br.com.devkemc.dto;
+package br.com.devkemc.infrastructure.web.dto.customer;
+
 import java.time.ZonedDateTime;
 import java.util.List;
 
-public record ResouceDto(
+public record Resouce(
         long total,
         long limite,
         ZonedDateTime data_extrato,

@@ -21,11 +21,11 @@ public class Transaction {
     private ZonedDateTime accomplishedAt;
 
     public Transaction(long value, String description, char type, Customer customer, ZonedDateTime accomplishedAt) {
-        this.value = value;
-        this.description = description;
-        this.type = type;
-        this.customer = customer;
-        this.accomplishedAt = accomplishedAt;
+        setValue(value);
+        setDescription(description);
+        setType(type);
+        setCustomer(customer);
+        setAccomplishedAt(accomplishedAt);
     }
 
     public Transaction() {
@@ -45,6 +45,9 @@ public class Transaction {
     }
 
     public void setDescription(String description) {
+        if (description == null || description.length() > 10) {
+            throw new IllegalArgumentException("Description must have a maximum of 10 characters");
+        }
         this.description = description;
     }
 
@@ -53,6 +56,9 @@ public class Transaction {
     }
 
     public void setType(char type) {
+        if (type != 'c' && type != 'd') {
+            throw new IllegalArgumentException("Invalid type");
+        }
         this.type = type;
     }
 

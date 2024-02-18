@@ -18,6 +18,12 @@ public class Customer {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     private Set<Transaction> transactions;
 
+    public Customer() {
+    }
+    public Customer(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
