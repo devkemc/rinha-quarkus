@@ -1,0 +1,71 @@
+version: "3.5"
+
+services:
+  api01: &api
+    build:
+        context: .
+        dockerfile: Dockerfile
+    hostname: api01
+    environment:
+      - DB_URL=postgresql://db:5432/rinha
+      - DB_USER=admin
+      - DB_PASSWORD_DB=123
+    expose:
+      - "8080"
+    depends_on:
+      - db
+    ulimits:
+      nproc: 1000000
+      nofile:
+        soft: 1000000
+        hard: 1000000
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "175MB"
+
+  api02:
+    <<: *api
+    hostname: app2
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api01
+      - api02
+    ports:
+      - "9999:9999"
+    ulimits:
+      nproc: 1000000
+      nofile:
+        soft: 1000000
+        hard: 1000000
+    deploy:
+      resources:
+        limits:
+          cpus: "0.05"
+          memory: "50MB"
+
+  db:
+    image: postgres:latest
+    hostname: db
+    environment:
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=rinha
+    ports:
+      - "5431:5432"
+    volumes:
+      - ./script.sql:/docker-entrypoint-initdb.d/script.sql
+    deploy:
+      resources:
+        limits:
+          cpus: "0.45"
+          memory: "150MB"
+networks:
+  default:
+    driver: bridge
+    name: rinha-nginx-2024q1
